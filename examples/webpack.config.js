@@ -1,7 +1,7 @@
 const {
   createConfig,
   addPlugin,
-  bricks: { entry, output, happyLess }
+  bricks: { entry, output, less }
 } = require('webpack-bricks')
 const webpack = require('webpack')
 
@@ -20,7 +20,7 @@ const styleConfig = createConfig([
     style: './src/style.less'
   }),
   output(),
-  happyLess(),
+  less(),
   addPlugin(new ManifestExtraPlugin())
 ])
 
@@ -29,9 +29,7 @@ const commonChunkConfig = createConfig([
     page1: './src/page1',
     page2: './src/page2'
   }),
-  output({
-    filename: 'static/js/[name].js?[hash]'
-  }),
+  output(),
   addPlugin(
     new webpack.optimize.CommonsChunkPlugin('common'),
     new ManifestExtraPlugin()
