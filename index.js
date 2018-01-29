@@ -27,7 +27,7 @@ const getExt = s => {
  * remove query string && get name
  * @param {* string}
  */
-const getName = s => s.split('?')[0]
+const getNameWithoutQs = s => s.split('?')[0]
 
 const getSlashPublic = publicPath => {
   if (_.last(publicPath !== '/')) {
@@ -59,10 +59,9 @@ const WebpackManifestExtraPlugin = class {
 
     let moduleAssets = {}
 
-    compiler.plugin('this-compilation', compilation => {
+    compiler.plugin('this-compilation', () => {
       moduleAssets = {}
     })
-
     // use finalFilename as key, and chunk entry or module.userRequest as value,
     // ensure that every assets should be unique
     compiler.plugin('compilation', compilation => {
@@ -80,15 +79,15 @@ const WebpackManifestExtraPlugin = class {
       const files = stats.toJson().assets.map(asset => {
         // asset.name is like 'static/js/main.js?jsknhd'
         const finalname = asset.name
-        // asset.name is like $1['main'] or $2['page1','page2'] or $3[]
+        // asset.chunkNames is like $1['main'] or $2['page1','page2'] or $3[]
         const chunkNames = asset.chunkNames
         let name
         // $1 name will be 'main' + ext
         if (chunkNames.length === 1) {
-          name = chunkNames[0] + getExt(getName(finalname))
+          name = chunkNames[0] + getExt(getNameWithoutQs(finalname))
           // $2 or $3 name will be assetPath but not queryString
         } else {
-          name = getName(finalname)
+          name = getNameWithoutQs(finalname)
         }
 
         return {
@@ -117,7 +116,7 @@ const WebpackManifestExtraPlugin = class {
 
       // merge old && new manifest to a final
       let manifest = old_manifest
-        ? _.assign(old_manifest, new_manifest)
+        ? merge(old_manifest, new_manifest)
         : new_manifest
 
       // transform
