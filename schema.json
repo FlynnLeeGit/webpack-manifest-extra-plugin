@@ -4,7 +4,7 @@
     "verbose": {
       "type": "boolean"
     },
-    "builder": {
+    "transform": {
       "instanceof": "Function"
     },
     "publicPath": {

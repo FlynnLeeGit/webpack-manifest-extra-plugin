@@ -11,11 +11,8 @@
 
 ### how?
 
-after every emit and done,this plugin will find the manifest.json in dist folder,if already has,it will merge old manifest and new manifest to a final file,and you can modify it just by `builder` function
+after every emit and done,this plugin will find the manifest.json in dist folder,if already has,it will merge old manifest and new manifest to a final file,and you can modify it just by `transform` function
 
-
-## notice
-now only support like`[name].js?[hash]` queryStirng hash filename hash,`[name].[hash].js` will be wrong
 
 install
 
@@ -37,7 +34,7 @@ const WebpackManifestExtraPlugin = require('webpack-manifest-extra-plugin')
       filename:'manifest.json' // default -> manifest.json,
       verbose: true // default -> true,
       publicPath:'/' // default -> webpack's publicPath config
-      builder(manifest,statsJson){ // manifest.json object && webpack's statsJson object
+      transform(manifest){ // manifest.json object && webpack's statsJson object
         // ... your transforms
         return manifest // return
       }

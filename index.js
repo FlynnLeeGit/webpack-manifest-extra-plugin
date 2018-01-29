@@ -36,27 +36,26 @@ const WebpackManifestExtraPlugin = class {
 
     const defaultConfig = {
       publicPath: webpackPublicPath,
-      builder: m => m,
+      transform: m => m,
       filename: 'manifest.json',
       verbose: true
     }
+    
     this.config = merge(defaultConfig, this.userConfig)
 
     const manifestPath = path.join(webpackOutputPath, this.config.filename)
 
+    // use finalFilename as key, and chunk entry or module.userRequest as value,
+    // ensure that every assets should be unique
     const moduleAssets = {}
     compiler.plugin('compilation', compilation => {
-      compilation.plugin('module-asset', ({ userRequest }, file) => {
-        moduleAssets[userRequest] = file
+      compilation.plugin('module-asset', ({ userRequest }, finalname) => {
+        moduleAssets[`${this.config.publicPath}${finalname}`] = userRequest
       })
     })
 
     // final stats to manifest.json file
     compiler.plugin('done', stats => {
-      console.log(moduleAssets, '==============')
-      // if not exit, it will be null
-      const old_manifest = fse.readJsonSync(manifestPath, { throws: false })
-
       const files = stats.toJson().assets.map(asset => {
         // asset.name is like 'static/js/main.js?jsknhd'
         const finalname = asset.name
@@ -77,17 +76,33 @@ const WebpackManifestExtraPlugin = class {
         }
       })
       // make the manifest hashTable
-      const new_manifest = files.reduce((res, f) => {
-        res[f.name] = `${this.config.publicPath}${f.finalname}`
-        return res
-      }, moduleAssets)
+      files.forEach(f => {
+        if (!moduleAssets[`${this.config.publicPath}${f.finalname}`]) {
+          moduleAssets[`${this.config.publicPath}${f.finalname}`] = f.name
+        }
+      })
+
+      // read the old manifest if not exit, it will be null
+      const old_manifest = fse.readJsonSync(manifestPath, { throws: false })
+
+      const new_manifest = _.reduce(
+        moduleAssets,
+        (res, v, k) => {
+          res[v] = k
+          return res
+        },
+        {}
+      )
+
+      console.log(new_manifest)
 
       // merge old && new manifest to a final
       let manifest = old_manifest
         ? Object.assign({}, old_manifest, new_manifest)
         : new_manifest
 
-      manifest = this.config.builder(manifest, stats.toJson())
+      // transform
+      manifest = this.config.transform(manifest, stats.toJson())
 
       if (!_.isEqual(old_manifest, manifest)) {
         fse.outputJsonSync(manifestPath, manifest, { spaces: 2 })
