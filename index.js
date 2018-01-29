@@ -96,7 +96,6 @@ const WebpackManifestExtraPlugin = class {
         if (!moduleAssets[`${this.config.publicPath}${f.finalname}`]) {
           moduleAssets[`${this.config.publicPath}${f.finalname}`] = f.name
         }
-        console.log(moduleAssets)
       })
 
       // read the old manifest if not exit, it will be null
