@@ -1,6 +1,6 @@
 {
   "name": "webpack-manifest-extra-plugin",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "manifest.json generator can be used  not only include all emitted assets but also in multiply compilation cases",
   "main": "index.js",
   "scripts": {
