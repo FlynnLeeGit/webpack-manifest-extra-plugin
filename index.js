@@ -57,9 +57,14 @@ const WebpackManifestExtraPlugin = class {
 
     const manifestPath = path.join(webpackOutputPath, this.config.filename)
 
+    let moduleAssets = {}
+
+    compiler.plugin('this-compilation', compilation => {
+      moduleAssets = {}
+    })
+
     // use finalFilename as key, and chunk entry or module.userRequest as value,
     // ensure that every assets should be unique
-    const moduleAssets = {}
     compiler.plugin('compilation', compilation => {
       compilation.plugin('module-asset', ({ userRequest }, finalname) => {
         moduleAssets[`${this.config.publicPath}${finalname}`] = path.isAbsolute(
@@ -112,7 +117,7 @@ const WebpackManifestExtraPlugin = class {
 
       // merge old && new manifest to a final
       let manifest = old_manifest
-        ? Object.assign({}, old_manifest, new_manifest)
+        ? _.assign(old_manifest, new_manifest)
         : new_manifest
 
       // transform

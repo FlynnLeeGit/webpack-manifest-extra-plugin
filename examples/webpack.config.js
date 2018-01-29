@@ -8,7 +8,6 @@ const webpack = require('webpack')
 const ExternalVendorPlugin = require('webpack-external-vendor-plugin')
 
 const ManifestExtraPlugin = require('../index')
-const ManifestPlugin = require('webpack-manifest-plugin')
 
 const jsConfig = createConfig([
   entry(),
@@ -23,9 +22,6 @@ const jsConfig = createConfig([
   }),
   addPlugin(
     new ManifestExtraPlugin(),
-    new ManifestPlugin({
-      fileName: 'manifest-plugin.json'
-    }),
     new ExternalVendorPlugin({
       entry: {
         libs: ['vue/dist/vue.js']
