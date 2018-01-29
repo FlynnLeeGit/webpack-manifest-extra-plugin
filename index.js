@@ -40,7 +40,7 @@ const WebpackManifestExtraPlugin = class {
       filename: 'manifest.json',
       verbose: true
     }
-    
+
     this.config = merge(defaultConfig, this.userConfig)
 
     const manifestPath = path.join(webpackOutputPath, this.config.filename)
@@ -50,7 +50,11 @@ const WebpackManifestExtraPlugin = class {
     const moduleAssets = {}
     compiler.plugin('compilation', compilation => {
       compilation.plugin('module-asset', ({ userRequest }, finalname) => {
-        moduleAssets[`${this.config.publicPath}${finalname}`] = userRequest
+        moduleAssets[`${this.config.publicPath}${finalname}`] = path.isAbsolute(
+          userRequest
+        )
+          ? path.join(path.dirname(finalname), path.basename(userRequest))
+          : userRequest
       })
     })
 
@@ -59,6 +63,7 @@ const WebpackManifestExtraPlugin = class {
       const files = stats.toJson().assets.map(asset => {
         // asset.name is like 'static/js/main.js?jsknhd'
         const finalname = asset.name
+        console.log(asset)
         // asset.name is like $1['main'] or $2['page1','page2'] or $3[]
         const chunkNames = asset.chunkNames
         let name
@@ -80,6 +85,7 @@ const WebpackManifestExtraPlugin = class {
         if (!moduleAssets[`${this.config.publicPath}${f.finalname}`]) {
           moduleAssets[`${this.config.publicPath}${f.finalname}`] = f.name
         }
+        console.log(moduleAssets)
       })
 
       // read the old manifest if not exit, it will be null
@@ -93,8 +99,6 @@ const WebpackManifestExtraPlugin = class {
         },
         {}
       )
-
-      console.log(new_manifest)
 
       // merge old && new manifest to a final
       let manifest = old_manifest
