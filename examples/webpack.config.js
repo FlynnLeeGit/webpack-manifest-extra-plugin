@@ -5,6 +5,8 @@ const {
 } = require('webpack-bricks')
 const webpack = require('webpack')
 
+const ExternalVendorPlugin = require('webpack-external-vendor-plugin')
+
 const ManifestExtraPlugin = require('../index')
 
 const jsConfig = createConfig([
@@ -12,7 +14,18 @@ const jsConfig = createConfig([
   output({
     filename: 'static/js/[name].js?[chunkhash]'
   }),
-  addPlugin(new ManifestExtraPlugin())
+  addPlugin(
+    new ManifestExtraPlugin(),
+    new ExternalVendorPlugin({
+      entry: {
+        libs: ['vue/dist/vue.js']
+      },
+      filename: 'static/js/[name].js?[hash:5]',
+      externals: {
+        vue: 'Vue'
+      }
+    })
+  )
 ])
 
 const styleConfig = createConfig([

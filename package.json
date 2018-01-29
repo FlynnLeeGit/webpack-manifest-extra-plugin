@@ -29,6 +29,7 @@
   "dependencies": {
     "fs-extra": "^5.0.0",
     "lodash": "^4.17.4",
+    "schema-utils": "^0.4.3",
     "vue": "^2.5.13",
     "webpack-merge": "^4.1.1"
   },

@@ -13,6 +13,10 @@
 
 after every emit and done,this plugin will find the manifest.json in dist folder,if already has,it will merge old manifest and new manifest to a final file,and you can modify it just by `builder` function
 
+
+## notice
+now only support like`[name].js?[hash]` queryStirng hash filename hash,`[name].[hash].js` will be wrong
+
 install
 
 ```shell

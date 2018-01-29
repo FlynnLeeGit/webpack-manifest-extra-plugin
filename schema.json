@@ -1,0 +1,18 @@
+{
+  "type": "object",
+  "properties": {
+    "verbose": {
+      "type": "boolean"
+    },
+    "builder": {
+      "instanceof": "Function"
+    },
+    "publicPath": {
+      "type": "string"
+    },
+    "filename": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

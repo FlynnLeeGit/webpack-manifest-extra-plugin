@@ -2347,7 +2347,7 @@ schema-utils@^0.3.0:
 
 schema-utils@^0.4.3:
   version "0.4.3"
-  resolved "https://registry.npmjs.org/schema-utils/-/schema-utils-0.4.3.tgz#e2a594d3395834d5e15da22b48be13517859458e"
+  resolved "http://registry.npm.taobao.org/schema-utils/download/schema-utils-0.4.3.tgz#e2a594d3395834d5e15da22b48be13517859458e"
   dependencies:
     ajv "^5.0.0"
     ajv-keywords "^2.1.0"
