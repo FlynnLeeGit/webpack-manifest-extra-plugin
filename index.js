@@ -10,7 +10,19 @@ const _ = require('lodash')
  * get file extname 'a.js -> .js'
  * @param {* string }
  */
-const getExt = s => path.extname(s)
+const getExt = s => {
+  const mapReg = /\.map$/
+  if (mapReg.test(s)) {
+    return (
+      '.' +
+      s
+        .split('.')
+        .slice(-2)
+        .join('.')
+    )
+  }
+  return path.extname(s)
+}
 /**
  * remove query string && get name
  * @param {* string}
@@ -63,7 +75,6 @@ const WebpackManifestExtraPlugin = class {
       const files = stats.toJson().assets.map(asset => {
         // asset.name is like 'static/js/main.js?jsknhd'
         const finalname = asset.name
-        console.log(asset)
         // asset.name is like $1['main'] or $2['page1','page2'] or $3[]
         const chunkNames = asset.chunkNames
         let name

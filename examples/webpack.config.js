@@ -1,7 +1,7 @@
 const {
   createConfig,
   addPlugin,
-  bricks: { entry, output, less, font, image, alias }
+  bricks: { entry, output, less, font, image, alias, devtool }
 } = require('webpack-bricks')
 const webpack = require('webpack')
 
@@ -17,6 +17,7 @@ const jsConfig = createConfig([
   }),
   font(),
   image(),
+  devtool('source-map'),
   alias({
     '@': require('path').resolve('src')
   }),
@@ -37,29 +38,27 @@ const jsConfig = createConfig([
   )
 ])
 
-// const styleConfig = createConfig([
-//   entry({
-//     style: './src/style.less'
-//   }),
-//   output(),
-//   less(),
-//   addPlugin(new ManifestExtraPlugin())
-// ])
+const styleConfig = createConfig([
+  entry({
+    style: './src/style.less'
+  }),
+  devtool('source-map'),
+  output(),
+  less(),
+  addPlugin(new ManifestExtraPlugin())
+])
 
-// const commonChunkConfig = createConfig([
-//   entry({
-//     page1: './src/page1',
-//     page2: './src/page2'
-//   }),
-//   output(),
-//   addPlugin(
-//     new webpack.optimize.CommonsChunkPlugin('common'),
-//     new ManifestExtraPlugin()
-//   )
-// ])
+const commonChunkConfig = createConfig([
+  entry({
+    page1: './src/page1',
+    page2: './src/page2'
+  }),
+  output(),
+  devtool('source-map'),
+  addPlugin(
+    new webpack.optimize.CommonsChunkPlugin('common'),
+    new ManifestExtraPlugin()
+  )
+])
 
-module.exports = [
-  jsConfig
-  // styleConfig,
-  // commonChunkConfig
-]
+module.exports = [jsConfig, styleConfig, commonChunkConfig]
