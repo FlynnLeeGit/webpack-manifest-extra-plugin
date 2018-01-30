@@ -1,10 +1,27 @@
 const fse = require('fs-extra')
 const path = require('path')
-const merge = require('webpack-merge')
 const validateOptions = require('schema-utils')
-const schema = require('./schema.json')
 
 const _ = require('lodash')
+
+const schema = {
+  type: 'object',
+  properties: {
+    verbose: {
+      type: 'boolean'
+    },
+    transform: {
+      instanceof: 'Function'
+    },
+    publicPath: {
+      type: 'string'
+    },
+    filename: {
+      type: 'string'
+    }
+  },
+  additionalProperties: false
+}
 
 /**
  * get file extname 'a.js -> .js'
@@ -30,10 +47,10 @@ const getExt = s => {
 const getNameWithoutQs = s => s.split('?')[0]
 
 const getSlashPublic = publicPath => {
-  if (_.last(publicPath !== '/')) {
-    return publicPath + '/'
+  if (!publicPath || _.last(publicPath) === '/') {
+    return publicPath
   }
-  return publicPath
+  return publicPath + '/'
 }
 
 const WebpackManifestExtraPlugin = class {
@@ -43,7 +60,8 @@ const WebpackManifestExtraPlugin = class {
   }
   apply(compiler) {
     // 添加 外部依赖
-    const webpackPublicPath = compiler.options.output.publicPath
+    // fix no publicPath will be undefined
+    const webpackPublicPath = compiler.options.output.publicPath || ''
     const webpackOutputPath = compiler.options.output.path
 
     const defaultConfig = {
@@ -53,7 +71,8 @@ const WebpackManifestExtraPlugin = class {
       verbose: true
     }
 
-    this.config = merge(defaultConfig, this.userConfig)
+    this.config = _.merge(defaultConfig, this.userConfig)
+    this.config.publicPath = getSlashPublic(this.config.publicPath)
 
     const manifestPath = path.join(webpackOutputPath, this.config.filename)
 
@@ -81,6 +100,7 @@ const WebpackManifestExtraPlugin = class {
         const finalname = asset.name
         // asset.chunkNames is like $1['main'] or $2['page1','page2'] or $3[]
         const chunkNames = asset.chunkNames
+
         let name
         // $1 name will be 'main' + ext
         if (chunkNames.length === 1) {
@@ -89,7 +109,6 @@ const WebpackManifestExtraPlugin = class {
         } else {
           name = getNameWithoutQs(finalname)
         }
-
         return {
           name,
           finalname
@@ -108,15 +127,17 @@ const WebpackManifestExtraPlugin = class {
       const new_manifest = _.reduce(
         moduleAssets,
         (res, v, k) => {
+          // to unix path if name or value has '\\'
+          v = v.replace(/\\/g, '/')
+          k = k.replace(/\\/g, '/')
           res[v] = k
           return res
         },
         {}
       )
-
       // merge old && new manifest to a final
       let manifest = old_manifest
-        ? merge(old_manifest, new_manifest)
+        ? _.merge({}, old_manifest, new_manifest)
         : new_manifest
 
       // transform

@@ -1,0 +1,30 @@
+{
+  "name": "manifest-extra",
+  "version": "1.0.0",
+  "description": "",
+  "main": "webpack.config.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "css-loader": "^0.28.9",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "file-loader": "^1.1.6",
+    "happypack": "^4.0.1",
+    "less": "^2.7.3",
+    "less-loader": "^4.0.5",
+    "nodemon": "^1.14.11",
+    "style-loader": "^0.20.1",
+    "url-loader": "^0.6.2",
+    "webpack": "^3.10.0",
+    "webpack-bricks": "^0.1.45",
+    "webpack-external-vendor-plugin": "^0.0.6"
+  },
+  "scripts": {
+    "dev:w": "webpack -w --progress",
+    "dev": "nodemon -w webpack.config.js --exec \"npm run dev:w\""
+  },
+  "dependencies": {
+    "vue": "^2.5.13"
+  }
+}
