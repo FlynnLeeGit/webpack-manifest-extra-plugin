@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  webpack-manifest-extra-plugin:
+  build:
     docker:
       - image: circleci/node:7.10
 
