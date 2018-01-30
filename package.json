@@ -3,12 +3,10 @@
   "version": "0.1.0",
   "description":
     "manifest.json generator can be used  not only include all emitted assets but also in multiply compilation cases",
-  "main": "dist/index.js",
+  "main": "./index.js",
   "scripts": {
     "test": "jest",
-    "dev": "babel index.js -d dist --watch & npm t -- --watch",
-    "prebuild": "npm t -- --coverage",
-    "build": "babel index.js -o release.js"
+    "dev": "npm t -- --watch"
   },
   "repository": {
     "type": "git",
@@ -45,15 +43,11 @@
     ]
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.0",
-    "babel-preset-env": "^1.6.1",
     "css-loader": "^0.28.9",
     "extract-text-webpack-plugin": "^3.0.2",
     "file-loader": "^1.1.6",
     "jest": "^22.1.4",
     "jest-babel": "^1.0.1",
-    "memory-fs": "^0.4.1",
     "style-loader": "^0.20.1",
     "webpack": "^3.10.0",
     "webpack-concat-plugin": "^2.4.2",
