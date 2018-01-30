@@ -1,16 +1,19 @@
 {
   "name": "webpack-manifest-extra-plugin",
   "version": "0.1.0",
-  "description": "manifest.json generator can be used  not only include all emitted assets but also in multiply compilation cases",
+  "description":
+    "manifest.json generator can be used  not only include all emitted assets but also in multiply compilation cases",
   "main": "dist/index.js",
   "scripts": {
     "test": "jest",
     "dev": "babel index.js -d dist --watch",
-    "build": "babel index.js -d dist"
+    "prebuild": "npm t -- --coverage",
+    "build": "babel index.js -o release.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/FlynnLeeGit/webpack-manifest-extra-plugin.git"
+    "url":
+      "git+https://github.com/FlynnLeeGit/webpack-manifest-extra-plugin.git"
   },
   "keywords": [
     "webpack",
@@ -27,7 +30,8 @@
   "bugs": {
     "url": "https://github.com/FlynnLeeGit/webpack-manifest-extra-plugin/issues"
   },
-  "homepage": "https://github.com/FlynnLeeGit/webpack-manifest-extra-plugin#readme",
+  "homepage":
+    "https://github.com/FlynnLeeGit/webpack-manifest-extra-plugin#readme",
   "dependencies": {
     "fs-extra": "^5.0.0",
     "lodash": "^4.17.4",
