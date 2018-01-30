@@ -6,7 +6,7 @@
   "main": "dist/index.js",
   "scripts": {
     "test": "jest",
-    "dev": "babel index.js -d dist --watch",
+    "dev": "babel index.js -d dist --watch & npm t -- --watch",
     "prebuild": "npm t -- --coverage",
     "build": "babel index.js -o release.js"
   },
