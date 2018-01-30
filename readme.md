@@ -1,5 +1,7 @@
 ## webpack-manifest-extra-plugin
 
+[![CircleCI](https://circleci.com/gh/FlynnLeeGit/webpack-manifest-extra-plugin.svg?style=svg)](https://circleci.com/gh/FlynnLeeGit/webpack-manifest-extra-plugin)
+
 #### manifest.json generator can be used not only include all emitted assets but also in multiply compilation cases
 
 ### why?
