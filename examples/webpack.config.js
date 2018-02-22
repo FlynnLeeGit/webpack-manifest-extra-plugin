@@ -1,26 +1,20 @@
-const {
-  createConfig,
-  addPlugin,
-  bricks: { entry, output, less, font, image, alias, devtool }
-} = require('webpack-bricks')
+const $ = require('webpack-bricks')
 const webpack = require('webpack')
-
 const ExternalVendorPlugin = require('webpack-external-vendor-plugin')
-
 const ManifestExtraPlugin = require('../index')
 
-const jsConfig = createConfig([
-  entry(),
-  output({
+const jsTask = $().lay(
+  $.entry(),
+  $.output({
     filename: 'static/js/[name].js?[chunkhash]'
   }),
-  font(),
-  image(),
-  devtool('source-map'),
-  alias({
+  $.font(),
+  $.image(),
+  $.devtool(),
+  $.alias({
     '@': require('path').resolve('src')
   }),
-  addPlugin(
+  $.plugins([
     new ManifestExtraPlugin(),
     new ExternalVendorPlugin({
       entry: {
@@ -31,30 +25,30 @@ const jsConfig = createConfig([
         vue: 'Vue'
       }
     })
-  )
-])
+  ])
+)
 
-const styleConfig = createConfig([
-  entry({
+const styleTask = $().lay(
+  $.entry({
     style: './src/style.less'
   }),
-  devtool('source-map'),
-  output(),
-  less(),
-  addPlugin(new ManifestExtraPlugin())
-])
+  $.devtool(),
+  $.output(),
+  $.less(),
+  $.plugin(new ManifestExtraPlugin())
+)
 
-const commonChunkConfig = createConfig([
-  entry({
+const commonChunkTask = $().lay(
+  $.entry({
     page1: './src/page1',
     page2: './src/page2'
   }),
-  output(),
-  devtool('source-map'),
-  addPlugin(
+  $.output(),
+  $.devtool(),
+  $.plugins([
     new webpack.optimize.CommonsChunkPlugin('common'),
     new ManifestExtraPlugin()
-  )
-])
+  ])
+)
 
-module.exports = [jsConfig, styleConfig, commonChunkConfig]
+module.exports = Promise.all([jsTask, styleTask, commonChunkTask])
