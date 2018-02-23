@@ -3748,6 +3748,15 @@ webpack-bricks@0.5.3:
     lodash "^4.17.4"
     yarn-install "^0.5.1"
 
+webpack-bricks@0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/webpack-bricks/-/webpack-bricks-0.6.0.tgz#52f2799ed693b0f3f5ae3a6a1ee4eb3f3c4047f2"
+  dependencies:
+    chalk "^2.3.0"
+    config-brick "^3.0.0"
+    lodash "^4.17.4"
+    yarn-install "^0.5.1"
+
 webpack-external-vendor-plugin@0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/webpack-external-vendor-plugin/-/webpack-external-vendor-plugin-0.1.2.tgz#d497391421d1bef6c933b6b540ed8ef40c6f446c"

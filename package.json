@@ -47,7 +47,6 @@
     "jest-babel": "^1.0.1",
     "style-loader": "^0.20.1",
     "webpack": "^3.10.0",
-    "webpack-bricks": "0.5.3",
     "webpack-concat-plugin": "^2.4.2",
     "webpack-external-vendor-plugin": "^0.0.6",
     "webpack-merge": "^4.1.1"

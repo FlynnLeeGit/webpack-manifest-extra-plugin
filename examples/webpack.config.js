@@ -51,4 +51,4 @@ const commonChunkTask = $().lay(
   ])
 )
 
-module.exports = Promise.all([jsTask, styleTask, commonChunkTask])
+module.exports = [jsTask, styleTask, commonChunkTask]
